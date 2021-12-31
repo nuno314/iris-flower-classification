@@ -1,39 +1,50 @@
 # Imports
 # begin
 #     import Pkg;
-#     packages = ["ScikitLearn","RDatasets"]   
+#     packages = ["CSV","ScikitLearn","DecisionTree]   
 #     Pkg.add(packages)
 # end
+# import Pkg;
+# Pkg.add("DataFrames")
+begin
+    using CSV, DataFrames
+    iris = CSV.read("IRIS.csv", DataFrame)
+    X = Array(iris[:, 1:4]);
+    Y = Array(iris[:, 5]);
+    x_training = X[1:100]
+    y_training = Y[1:100]
+    x_test = X[101:150]
+    y_test = X[101:150]
+    print(typeof(x_training))
+end
 
-# Loading, cleaning, and manipulating the data
-import Pkg;
-Pkg.add("DataFrames")
-# Pkg.add("MLDataUtils")
-# Pkg.add("DecisionTree")
-# begin
-    # using MLDataUtils
-    # X, Y, fnames = load_iris(150);
-    # using RDatasets: dataset
-    # using DataFrames
-    # iris = dataset("datasets", "iris")
-    # names!(iris, [:A, :B, :C, :D, :E])
-    # X = convert(Array, iris[[:A, :B, :C, :D]])
-    
-    # print(X)
-    # print(Y)
-    # print(fnames)
+function split_data(x::Array{Symbol}, n::Array)
+    result = Vector{Vector{eltype(x)}}
+    start = firstindex(x)
+    for len in n
+        push!(result, x[start:(start + len - 1)])
+        start += len
+    end
+    result
+end
+
+
+
+
+# abstract type Node end
+
+# struct DecisionTree
+#     root::Node
+#     data::Vector{AbstractString}
 # end
 
-begin
-    using DecisionTree
-    X, Y = load_data("iris")
-    X = float.(X)
-    Y = string.(Y)
-    model = DecisionTreeClassifier(max_depth=2)
-    fit!(model, X, Y)
-    print_tree(model, 5)
-    # model = build_tree(Y, X)
-    # model = prune_tree(model, 0.9)
-    # print_tree(model,5)
-end
+# function print(io::IO, tree::DecisionTree)
+#     nodes = Node[tree.root]
+# end
+
+# function decision_tree(x::Matrix{Symbol}, y::Matrix{Symbol})
+#     using DecisionTree
+#     tree = DecisionTree() 
+
+# end
 
